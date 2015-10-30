@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1446146919 source:/home/mahmoud/os labs/lab 2/main.c
+1446160771 source:/home/mahmoud/os labs/lab 2/main.c
 	<stdio.h>
 	<stdlib.h>
 	<pthread.h>
@@ -7,5 +7,5 @@
 	<sys/time.h>
 	"matrix_library.h"
 
-1446147088 /home/mahmoud/os labs/lab 2/matrix_library.h
+1446161222 /home/mahmoud/os labs/lab 2/matrix_library.h
 
