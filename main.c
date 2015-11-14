@@ -9,10 +9,10 @@
 #define TRUE 1
 #define FALSE 0
 #define bool int
-#define MAX_COLS_COUNT 100
-#define MAX_ROWS_COUNT 100
+#define MAX_COLS_COUNT 10000
+#define MAX_ROWS_COUNT 10000
 //maximum number of threads is max number of rows * cols
-#define MAX_THREAD_NUMBER 10000
+#define MAX_THREAD_NUMBER 100000000
 
 int A[MAX_ROWS_COUNT][MAX_COLS_COUNT];
 int B[MAX_ROWS_COUNT][MAX_COLS_COUNT];
@@ -29,17 +29,17 @@ int main(int argc , char** argv)
     fileA = malloc(100);
     fileB = malloc(100);
     fileC = malloc(100);
-    if(argc < 5)  //if no files defined
+    if(argc < 4)  //if no files defined
     {
-        fileA = "a.txt";
-        fileB = "b.txt";
-        fileC = "c.out";
+        strcpy(fileA , "a.txt");
+        strcpy(fileB , "b.txt");
+        strcpy(fileC , "c");
     }
     else
     {
-        strcpy(fileA , argv[2]);
-        strcpy(fileB , argv[3]);
-        strcpy(fileC , argv[4]);
+        strcpy(fileA , argv[1]);
+        strcpy(fileB , argv[2]);
+        strcpy(fileC , argv[3]);
     }
     if(read_matrix_A()==FALSE)
     {
@@ -61,17 +61,12 @@ int main(int argc , char** argv)
     }
     else
     {
-        if(argv[1][0]=='0'){
-            printf("using thread for each row method\n");
-            second_method();
-        }
-        else {
-            printf("Using thread for each element method\n");
-            first_method();
-        }
+        printf("Using thread for each element method\n");
+        first_method();
+        printf("using thread for each row method\n");
+        second_method();
         return 0;
     }
-    return 1;
 }
 
 //calculates C by having a thread calculate each element
@@ -100,7 +95,7 @@ void first_method()
     {
         pthread_join(threads[i],NULL);
     }
-    print_result();
+    print_result(1);
     gettimeofday(&stop, NULL); //end checking time
     printf("Seconds taken %lu\n", stop.tv_sec - start.tv_sec);
     printf("Microseconds taken: %lu\n", stop.tv_usec - start.tv_usec);
@@ -150,7 +145,7 @@ void second_method()
     {
         pthread_join(threads[i],NULL);
     }
-    print_result();
+    print_result(2);
     gettimeofday(&stop, NULL); //end checking time
     printf("Seconds taken %lu\n", stop.tv_sec - start.tv_sec);
     printf("Microseconds taken: %lu\n", stop.tv_usec - start.tv_usec);
@@ -176,11 +171,17 @@ void* calculate_row(void* threadarg)
 }
 
 //prints the matrix C to the file of C
-void print_result()
+void print_result(int method_id)
 {
     int i,j;
-    freopen(fileC , "w" , stdout);
-    printf("%d ___ %d\n" , C_rows , C_cols);
+    char* file = malloc(100);
+    strcpy(file , fileC);
+    if(method_id == 1){
+        strcat(file , "_1");
+    }
+    else strcat(file, "_2");
+    strcat(file , ".out");
+    freopen(file , "w" , stdout);
     for(i = 0 ; i  < C_rows ; i++)
     {
         for(j = 0 ; j < C_cols ; j ++)

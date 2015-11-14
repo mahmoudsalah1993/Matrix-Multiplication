@@ -25,7 +25,7 @@ void first_method();
 void* calculate_element(void* threadarg);
 void second_method();
 void* calculate_row(void* threadarg);
-void print_result();
+void print_result(int method_id);
 bool read_matrix_A();
 bool read_matrix_B();
 void print_error(enum error_codes error);
